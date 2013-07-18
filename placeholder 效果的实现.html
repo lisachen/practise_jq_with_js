@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -14,20 +14,21 @@ div {
 }
 .userName-group, .pswd-group {
 	width: 153px;
-	height: 22px;
+	height: 24px;
 	margin-bottom:10px;
 }
 label {
-	line-height: 26px;
+	margin-left:3px;
+	line-height: 24px;
 	z-index: 1;
 	color: #999;
 }
 .userName-group input, .pswd-group input {
 	position: absolute;
 	top: 0;
-	left: -5px;
+	left:0;
 	width: 153px;
-	padding: 2px;
+	height:22px;
 	border:1px solid #bbb;
 	z-index: 999;
 	background-color: transparent;
@@ -40,7 +41,7 @@ label {
 <h1>placeholder 效果的实现</h1>
 <div class="userName-group">
 	<label for="username">用户名</label>
-	<input type="text" id="username" value="xf">
+	<input type="text" id="username">
 </div>
 <div class="pswd-group">
 	<label for="password">密码</label>
@@ -51,7 +52,7 @@ label {
 /*$(function(){	
 	var input=$("input"),
 		len=input.length;
-	for(var i=0;i<len;i++){
+	for(var i=0;i<len;i++){//判断浏览器是否记住信息
 		var val=input.eq(i).val();
 		if(val!==''){
 			input.eq(i).prev('label').hide();
@@ -86,9 +87,8 @@ if (window.ActiveXObject){
 //	Sys.safari = ua.match(/version\/([\d.]+)/)[1];
 //}
 
-window.onload=function(){
-	var s=Sys.ie||'',
-		input=document.getElementsByTagName('input'),
+window.onload=function(){	
+	var	input=document.getElementsByTagName('input'),
 		label=document.getElementsByTagName('label'),
 		username=document.getElementById('username'),
 		pwd=document.getElementById('password'),
@@ -98,11 +98,7 @@ window.onload=function(){
 		var val=input.item(i).value,
 			div=input.item(i).parentNode;
 		if(val!==''){
-			if(s=='6.0'||'7.0'||'8.0'){//s.indexOf('6'||'7'||'8')>0不知道为什么这样不对 ？？
-				div.firstChild.style.display='none';//不知道为什么不能用.previousSibling ？？？？
-			}else{
-				div.childNodes[1].style.display='none';//不知道为什么ie9以上和chrome不支持firstChild ？？？
-			}
+			label_s_h(div,'none');
 		}
 	}
 	label.onclick=function(){
@@ -110,26 +106,31 @@ window.onload=function(){
 	}
 
 	username.onkeydown=pwd.onkeydown=function(){
-		var label=this.parentNode;
-		if(s=='6.0'||'7.0'||'8.0'){
-			label.firstChild.style.display='none';
-		}else{
-			label.childNodes[1].style.display='none';
-		}
+		var div=this.parentNode;
+			label_s_h(div,'none');
 	}
 	username.onblur=pwd.onblur=function(){
 		var _this=this,
-			label=this.parentNode,
+			div=this.parentNode,
 			val=_this.value;
 		if(val==''){
-			if(s=='6.0'||'7.0'||'8.0'){
-				label.firstChild.style.display='block';
-			}else{
-				label.childNodes[1].style.display='block';
-			}
+			label_s_h(div,'block');
 		}
 	}
 }
+s=Sys.ie||'';//没有空s为undefined
+function label_s_h(o,d){
+	/*if(s=='6.0'||s=='7.0'||s=='8.0'){
+		//s.indexOf('6'||'7'||'8')>0不知道为什么这样不对 ？？
+		//s=='6.0'||'7.0'||'8.0' 写在label_s_h()函数里判断就出错，chrome下也执行到这里，不写在函数里是对的
+		o.firstChild.style.display=d;//不知道为什么不能用.previousSibling ？？
+		
+	}else{
+		o.childNodes[1].style.display=d;//不知道为什么ie9以上和chrome不支持firstChild ？？？
+	}*/
+	s=='6.0'||s=='7.0'||s=='8.0'?o.firstChild.style.display=d:o.childNodes[1].style.display=d;
+}
+
 </script>
 </body>
 </html>
