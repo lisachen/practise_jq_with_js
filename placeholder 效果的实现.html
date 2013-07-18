@@ -1,0 +1,135 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>placeholder 效果的实现</title>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+<style>
+body {
+	font-size: 12px;
+}
+div {
+	position: relative;
+}
+.userName-group, .pswd-group {
+	width: 153px;
+	height: 22px;
+	margin-bottom:10px;
+}
+label {
+	line-height: 26px;
+	z-index: 1;
+	color: #999;
+}
+.userName-group input, .pswd-group input {
+	position: absolute;
+	top: 0;
+	left: -5px;
+	width: 153px;
+	padding: 2px;
+	border:1px solid #bbb;
+	z-index: 999;
+	background-color: transparent;
+}
+</style>
+<body>
+<h1>placeholder 效果</h1>
+<input type="text" placeholder="用户名">
+<input type="password" placeholder="密码">
+<h1>placeholder 效果的实现</h1>
+<div class="userName-group">
+	<label for="username">用户名</label>
+	<input type="text" id="username" value="xf">
+</div>
+<div class="pswd-group">
+	<label for="password">密码</label>
+	<input type="password" id="password">
+</div>
+<script>
+
+/*$(function(){	
+	var input=$("input"),
+		len=input.length;
+	for(var i=0;i<len;i++){
+		var val=input.eq(i).val();
+		if(val!==''){
+			input.eq(i).prev('label').hide();
+		}
+	}
+	$("label").click(function(){
+		$(this).next().focus();
+	})	
+	$("#username,#password").keydown(function(){
+		$(this).prev().hide();
+	}).blur(function(){
+		var _this=$(this);
+		if (_this.val() == ''){
+			_this.prev().show();
+		}
+	});
+})*/
+
+//判断浏览器
+var Sys = {};
+var ua = navigator.userAgent.toLowerCase();
+if (window.ActiveXObject){
+	Sys.ie = ua.match(/msie ([\d.]+)/)[1];
+}
+//else if (document.getBoxObjectFor){
+//	Sys.firefox = ua.match(/firefox\/([\d.]+)/)[1];
+//}else if (window.MessageEvent && !document.getBoxObjectFor){
+//	Sys.chrome = ua.match(/chrome\/([\d.]+)/)[1];
+//}else if (window.opera){
+//	Sys.opera = ua.match(/opera.([\d.]+)/)[1];
+//}else if (window.openDatabase){
+//	Sys.safari = ua.match(/version\/([\d.]+)/)[1];
+//}
+
+window.onload=function(){
+	var s=Sys.ie||'',
+		input=document.getElementsByTagName('input'),
+		label=document.getElementsByTagName('label'),
+		username=document.getElementById('username'),
+		pwd=document.getElementById('password'),
+		len=input.length;
+		
+	for(var i=0;i<len;i++){
+		var val=input.item(i).value,
+			div=input.item(i).parentNode;
+		if(val!==''){
+			if(s=='6.0'||'7.0'||'8.0'){//s.indexOf('6'||'7'||'8')>0不知道为什么这样不对 ？？
+				div.firstChild.style.display='none';//不知道为什么不能用.previousSibling ？？？？
+			}else{
+				div.childNodes[1].style.display='none';//不知道为什么ie9以上和chrome不支持firstChild ？？？
+			}
+		}
+	}
+	label.onclick=function(){
+		this.nextSibling('input').focus;	
+	}
+
+	username.onkeydown=pwd.onkeydown=function(){
+		var label=this.parentNode;
+		if(s=='6.0'||'7.0'||'8.0'){
+			label.firstChild.style.display='none';
+		}else{
+			label.childNodes[1].style.display='none';
+		}
+	}
+	username.onblur=pwd.onblur=function(){
+		var _this=this,
+			label=this.parentNode,
+			val=_this.value;
+		if(val==''){
+			if(s=='6.0'||'7.0'||'8.0'){
+				label.firstChild.style.display='block';
+			}else{
+				label.childNodes[1].style.display='block';
+			}
+		}
+	}
+}
+</script>
+</body>
+</html>
