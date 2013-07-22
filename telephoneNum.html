@@ -3,31 +3,119 @@
 <head>
 <meta charset="utf-8">
 <title>telephone number</title>
-<script src="jquery-1.10.1.min.js"></script>
-<!--<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>-->
-<style></style>
+<!--<script src="jquery-1.10.1.min.js"></script>-->
+<style>
+*{
+	margin:0;
+	padding:0;
+}
+form{
+	width:300px;
+	position:relative;
+	margin:10px;
+}
+fieldset{
+	padding:10px;
+	border:1px dashed #ddd;
+}
+#num_info{
+	display:none;
+	position:absolute;
+	left: 11px;
+	bottom: 37px;
+	width: 170px;
+	height:30px;
+	border:1px solid #ddd;
+	border-bottom:none;
+	background-color:#f6f6f6;
+	font:20px/30px verdana,arial;
+	color:#F90;	
+}
+#num{
+	width:170px;
+	height:24px;
+	line-height:24px;
+	margin-top:40px;
+	border:1px solid #bbb;
+}
+#num:focus{
+	outline:none;
+	border-color:#999;
+}
+p{
+	font-size:12px;
+	color:#999;
+}
+</style>
 </head>
 <body>
-<input type="text" id="num">
-<span id="num_info"></span>
+<form>
+	<fieldset>
+		<legend>Telephone Number</legend>
+		<label id="num_info" for="num"></label>
+		<input type="text" id="num" maxlength="11">
+	</fieldset>
+</form>
+<p>*中文输入法下就能输入字母，还没找到解决方法</p>
 <script>
-$(function(){
-	$('#num').keyup(function(){
-		var val=$(this).val(),
-			_val,
-			len=val.length;
+//$(function(){
+//	var $numInfo=$('#num_info');	
+//	$('#num').focus(function() {  
+//        this.style.imeMode='inactive';  
+//	}).keypress(function(){
+//		var keyCode=event.keyCode;
+//		if (!(keyCode >= 48 && keyCode <=57)){//!(keyCode>95 && keyCode<106) || (keyCode >= 48 && keyCode <=57)) 为什么这样判断不对  
+//        	return false;
+//		}
+//	}).keyup(function(){	
+//		var val=$(this).val(),
+//			_val,
+//			len=val.length;
+//		if(val!==''){$numInfo.show();}	
+//		if(len<=3){
+//			_val = val.substr(0,3);
+//		}
+//		else if(len>3&&len<=7){
+//			_val = val.substr(0,3)+"-"+val.substr(3,len);
+//		}
+//		else if(len>7){
+//			_val= val.substr(0,3)+"-"+val.substr(3,4)+'-'+val.substr(7,len);
+//		}
+//		$numInfo.text(_val);
+//	}).blur(function(){
+//		$numInfo.hide();
+//	})
+//})
+
+window.onload=function(){
+	var $numInfo=document.getElementById('num_info'),
+		$num=document.getElementById('num'),
+		_val,_val1,_val2;
+	$num.onkeyup=function(){
+		var val=this.value,
+			len=val.length;	
+		if(val!=''){$numInfo.style.display='block';}
 		if(len<=3){
-			_val = val.substr(0,3);
+			_val=_val1= val.substr(0,3);
 		}
 		else if(len>3&&len<=7){
-			_val = val.substr(0,3)+"-"+val.substr(3,len);
+			_val=_val2=_val1+"-"+val.substr(3,len);
 		}
 		else if(len>7){
-			_val= val.substr(0,3)+"-"+val.substr(3,4)+'-'+val.substr(7,len);
+			_val=_val2+'-'+val.substr(7,len);
 		}
-		$('#num_info').text(_val);
-	})
-})
+		$numInfo.innerHTML=_val;
+	}
+	$num.onblur=function(){
+		$numInfo.style.display='none';		
+	}
+	$num.onkeypress=function(){
+	var keyCode=event.keyCode;
+		if (!(keyCode >= 48 && keyCode <=57)){//中文状态下就能输入字母
+        	return false;
+		}	
+	}
+}
 </script>
 </body>
 </html>
