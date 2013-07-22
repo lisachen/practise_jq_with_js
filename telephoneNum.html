@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>telephone number</title>
+<script src="jquery-1.10.1.min.js"></script>
+<!--<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>-->
+<style></style>
+</head>
+<body>
+<input type="text" id="num">
+<span id="num_info"></span>
+<script>
+$(function(){
+	$('#num').keyup(function(){
+		var val=$(this).val(),
+			_val,
+			len=val.length;
+		if(len<=3){
+			_val = val.substr(0,3);
+		}
+		else if(len>3&&len<=7){
+			_val = val.substr(0,3)+"-"+val.substr(3,len);
+		}
+		else if(len>7){
+			_val= val.substr(0,3)+"-"+val.substr(3,4)+'-'+val.substr(7,len);
+		}
+		$('#num_info').text(_val);
+	})
+})
+</script>
+</body>
+</html>
