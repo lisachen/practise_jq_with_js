@@ -56,19 +56,14 @@ p{
 		<input type="text" id="num" maxlength="11">
 	</fieldset>
 </form>
-<p>*中文输入法下就能输入字母，还没找到解决方法</p>
 <script>
 //$(function(){
 //	var $numInfo=$('#num_info');	
 //	$('#num').focus(function() {  
 //        this.style.imeMode='inactive';  
-//	}).keypress(function(){
-//		var keyCode=event.keyCode;
-//		if (!(keyCode >= 48 && keyCode <=57)){//!(keyCode>95 && keyCode<106) || (keyCode >= 48 && keyCode <=57)) 为什么这样判断不对  
-//        	return false;
-//		}
 //	}).keyup(function(){	
-//		var val=$(this).val(),
+//		var val=$(this).val().replace(/[^\d]/g,''),
+//			$(this).val(val),
 //			_val,
 //			len=val.length;
 //		if(val!==''){$numInfo.show();}	
@@ -92,7 +87,7 @@ window.onload=function(){
 		$num=document.getElementById('num'),
 		_val,_val1,_val2;
 	$num.onkeyup=function(){
-		var val=this.value,
+		var val=this.value=this.value.replace(/[^\d]/g,''),
 			len=val.length;	
 		if(val!=''){$numInfo.style.display='block';}
 		if(len<=3){
@@ -108,12 +103,6 @@ window.onload=function(){
 	}
 	$num.onblur=function(){
 		$numInfo.style.display='none';		
-	}
-	$num.onkeypress=function(){
-	var keyCode=event.keyCode;
-		if (!(keyCode >= 48 && keyCode <=57)){//中文状态下就能输入字母
-        	return false;
-		}	
 	}
 }
 </script>
