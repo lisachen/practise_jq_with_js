@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title></title>
+<title>购物车数量调整</title>
 <style>
 .amount {
 	margin: 20px 200px;
@@ -70,13 +70,13 @@ input {
 	color: #F40;
 }
 </style>
-<script src="jquery-1.10.1.min.js"></script>
+<!--<script src="jquery-1.10.1.min.js"></script>-->
 </head>
 
 <body>
 <div class="amount">
 	<a href="#" id="minus">-</a>
-	<input type="text" id="text" value="1" >
+	<input type="text" id="text" value="1" data-max='5' data-min='0'>
 	<a href="#" id="plus">+</a>
 	<p id="note">
 		<b>◆</b>
@@ -85,52 +85,109 @@ input {
 	</p>
 </div>
 <script>
+//var $minus=$('#minus'),
+//	$plus=$('#plus'),
+//	$text=$('#text'),
+//	$note=$('#note'),
+//	maxNum=$text.data('max'),
+//	minNum=$text.data('min');	
+//$minus.click(function(){
+//	var val=$text.val()*1;
+//	if(val>minNum){
+//		$text.val(val-1);
+//		$('a').removeClass('disabled');
+//		$note.hide();
+//	}
+//	if(val==minNum+1){
+//		$note.show().find('em').text('不能少于'+minNum);
+//		$(this).addClass('disabled');	
+//	}
+//})
+//$plus.click(function(){
+//	var val=$text.val()*1;
+//	if(val<maxNum){
+//		$text.val(val+1);
+//		$('a').removeClass('disabled');
+//		$note.hide();
+//	}
+//	if(val==maxNum-1){
+//		$(this).addClass('disabled');
+//		$note.show().find('em').text('最大不能超过'+maxNum);
+//	}
+//})
+//$text.keyup(function(){
+//	var val=$(this).val().replace(/[^\d]/g,'');
+//	$(this).val(val);
+//	if(val<=minNum){
+//		$text.val(minNum);
+//		$note.show().find('em').text('不能少于'+minNum);
+//		$minus.addClass('disabled').siblings('a').removeClass('disabled');	
+//	}else if(val>=maxNum){
+//		$text.val(maxNum);
+//		$note.show().find('em').text('最大不能超过'+maxNum);	
+//		$plus.addClass('disabled').siblings('a').removeClass('disabled');
+//	}else{
+//		$note.hide();
+//		$('a').removeClass('disabled');
+//	}
+//})
 
-var $minus=$('#minus'),
-	$plus=$('#plus'),
-	$text=$('#text'),
-	$note=$('#note'),
-	maxNum=5;	
-$minus.click(function(){
-	var val=$text.val()*1;
-	if(val>0){
-		$text.val(val-1);
-		$('a').removeClass('disabled');
-		$note.hide();
+function Id(o){
+	return document.getElementById(o);
+}
+
+var $minus=Id('minus'),
+	$plus=Id('plus'),
+	$text=Id('text'),
+	$note=Id('note'),
+	maxNum=$text.getAttribute('data-max'),
+	minNum=$text.getAttribute('data-min'),
+	$a=document.getElementsByTagName('a');
+$minus.onclick=function(){
+	var val=$text.value*1;
+	if(val>minNum){
+		$text.value=val-1;
+		$a[1].className='';
+		$note.style.display='none';
 	}
-	if(val==1){
-		$note.show().find('em').text('不能少于0');
-		$(this).addClass('disabled');	
+	if(val==minNum+1){
+		$note.style.display='block';
+		$note.getElementsByTagName('em')[0].innerText='不能少于'+minNum;
+		this.className='disabled';
 	}
-})
-$plus.click(function(){
-	var val=$text.val()*1;
+}
+$plus.onclick=function(){
+	var val=$text.value*1;
 	if(val<maxNum){
-		$text.val(val+1);
-		$('a').removeClass('disabled');
-		$note.hide();
+		$text.value=val+1;
+		$a[0].className='';
+		$note.style.display='none';
 	}
 	if(val==maxNum-1){
-		$(this).addClass('disabled');
-		$note.show().find('em').text('最大不能超过'+maxNum);
+		$note.style.display='block';
+		$note.getElementsByTagName('em')[0].innerText='最大不能超过'+maxNum;
+		this.className='disabled';
 	}
-})
-$text.keyup(function(){
-	var val=$(this).val().replace(/[^\d]/g,'');
-	$(this).val(val);
-	if(val<=0){
-		$text.val(0);
-		$note.show().find('em').text('不能少于0');
-		$minus.addClass('disabled').siblings('a').removeClass('disabled');	
+}
+$text.onkeyup=function(){
+	var val=this.value=this.value.replace(/[^\d]/g,'');
+	if(val<=minNum){
+		$text.value=minNum;
+		$note.style.display='block';
+		$note.getElementsByTagName('em')[0].innerText='不能少于'+minNum;
+		$a[0].className='disabled';
+		$a[1].className='';
 	}else if(val>=maxNum){
-		$text.val(maxNum);
-		$note.show().find('em').text('最大不能超过'+maxNum);	
-		$plus.addClass('disabled').siblings('a').removeClass('disabled');
+		$text.value=maxNum;
+		$note.style.display='block';
+		$note.getElementsByTagName('em')[0].innerText='最大不能超过'+maxNum;
+		$a[1].className='disabled';
+		$a[0].className='';
 	}else{
-		$note.hide();
-		$('a').removeClass('disabled');
+		$note.style.display='none';
+		$a[0].className=$a[1].className='';
 	}
-})
+}
 </script>
 
 </body>
